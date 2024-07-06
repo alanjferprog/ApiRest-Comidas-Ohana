@@ -23,7 +23,7 @@ public class Comida
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_comida", nullable = false)
-    private int idComida;
+    private Integer idComida;
 
     @Column(nullable = false, length = 30, unique = true)
     private String nombre;
