@@ -48,13 +48,8 @@ public class ComidaService {
     public List<Comida> getLessThan(double price)
     { return comidaRepository.findAllByDisponibleTrueAndPrecioLessThanEqualOrderByPrecioAsc(price); }
 
-    /* @Transactional(noRollbackFor = EmailApiException.class)
-    public void updatePrice(UpdateFoodPriceDto dto)
-    { this.comidaRepository.updatePrice(dto);
-        this.sendEmail();}
-
-     */
     @Transactional
     public void updatePrice(UpdateFoodPriceDto dto)
     { this.comidaRepository.updatePrice(dto); }
+
 }

@@ -1,8 +1,10 @@
 package com.comidas.ohana.persistence.entity;
 
+import com.comidas.ohana.persistence.audit.AuditableEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
 import jakarta.persistence.JoinColumn;
@@ -12,14 +14,16 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Table(name = "items_orden")
+@EntityListeners(AuditingEntityListener.class)
 @IdClass(ItemOrderID.class)
 @Getter
 @Setter
 @NoArgsConstructor
-public class ItemOrden
+public class ItemOrden extends AuditableEntity
 {
     @Id
     @Column(name = "id_orden", nullable = false)

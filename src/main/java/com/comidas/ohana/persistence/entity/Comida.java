@@ -1,5 +1,6 @@
 package com.comidas.ohana.persistence.entity;
 
+import com.comidas.ohana.persistence.audit.AuditableEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -11,14 +12,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Table(name = "comidas")
+@EntityListeners(AuditingEntityListener.class)
 @Getter
 @Setter
 @NoArgsConstructor
 @ToString
-public class Comida
+public class Comida extends AuditableEntity
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,4 +36,5 @@ public class Comida
 
     @Column(columnDefinition = "TINYINT", nullable = false)
     private Boolean disponible;
+
 }
