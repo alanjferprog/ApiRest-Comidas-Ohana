@@ -1,12 +1,15 @@
 package com.comidas.ohana.web.controller;
 
 import com.comidas.ohana.domain.service.OrderService;
+import com.comidas.ohana.domain.service.dto.RandomOrderDto;
 import com.comidas.ohana.persistence.entity.Order;
 import com.comidas.ohana.persistence.projection.IOrderSummary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -42,4 +45,8 @@ public class OrderController
     @GetMapping("/summary/{idorder}")
     public ResponseEntity<IOrderSummary> getSummary(@PathVariable int idorden)
     { return ResponseEntity.ok(this.orderService.getSummary(idorden)); }
+
+    @PostMapping("/random")
+    public ResponseEntity<Boolean> randomOrder(@RequestBody RandomOrderDto dto)
+    { return ResponseEntity.ok(this.orderService.saveRandomOrder(dto)); }
 }

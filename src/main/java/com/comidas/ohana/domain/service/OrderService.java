@@ -1,10 +1,12 @@
 package com.comidas.ohana.domain.service;
 
+import com.comidas.ohana.domain.service.dto.RandomOrderDto;
 import com.comidas.ohana.persistence.entity.Order;
 import com.comidas.ohana.persistence.projection.IOrderSummary;
 import com.comidas.ohana.persistence.repository.IOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -43,4 +45,8 @@ public class OrderService
 
     public IOrderSummary getSummary(int orderId)
     { return this.orderRepository.findSummary(orderId); }
+
+    @Transactional
+    public boolean saveRandomOrder(RandomOrderDto randomOrderDto)
+    { return this.orderRepository.saveRandomOrder(randomOrderDto.getIdCustomer(), randomOrderDto.getMethod()); }
 }

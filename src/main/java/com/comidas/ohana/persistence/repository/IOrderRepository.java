@@ -3,6 +3,7 @@ package com.comidas.ohana.persistence.repository;
 import com.comidas.ohana.persistence.entity.Order;
 import com.comidas.ohana.persistence.projection.IOrderSummary;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.data.repository.query.Param;
 
@@ -27,4 +28,7 @@ public interface IOrderRepository extends ListCrudRepository<Order, Integer>
                     "WHERE po.id_order = :ordenId " +
                     "GROUP BY po.id_order, cu.name, po.date, po.total;", nativeQuery = true)
     IOrderSummary findSummary(@Param("ordenId") int idOrder);
+
+    @Procedure(value = "saturday_party_random_food", outputParameterName = "order_taken")
+    boolean saveRandomOrder(@Param("id_customer") String idCustomer, @Param("method") String method);
 }
