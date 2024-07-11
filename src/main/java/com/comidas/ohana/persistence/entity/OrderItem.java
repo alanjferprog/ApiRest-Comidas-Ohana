@@ -17,39 +17,39 @@ import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
-@Table(name = "items_orden")
+@Table(name = "order_items")
 @EntityListeners(AuditingEntityListener.class)
-@IdClass(ItemOrderID.class)
+@IdClass(OrderItemID.class)
 @Getter
 @Setter
 @NoArgsConstructor
-public class ItemOrden extends AuditableEntity
+public class OrderItem extends AuditableEntity
 {
     @Id
-    @Column(name = "id_orden", nullable = false)
-    private int idOrden;
+    @Column(name = "id_order", nullable = false)
+    private int orderId;
 
     @Id
     @Column(name = "id_item", nullable = false)
-    private int idItem;
+    private int itemId;
 
-    @Column(name = "id_comida", nullable = false)
-    private int idComida;
+    @Column(name = "id_food", nullable = false)
+    private int foodId;
 
     @Column(nullable = false, columnDefinition = "DECIMAL(2,1)")
-    private Double cantidad;
+    private Double quantity;
 
     @Column(nullable = false, columnDefinition = "DECIMAL(5,2)")
-    private Double precio;
+    private Double price;
 
     @ManyToOne
-    @JoinColumn(name = "id_orden", referencedColumnName = "id_orden", insertable = false, updatable = false)
+    @JoinColumn(name = "id_order", referencedColumnName = "id_order", insertable = false, updatable = false)
     @JsonIgnore
-    private Orden orden;
+    private Order order;
 
     @OneToOne
-    @JoinColumn(name = "id_comida", referencedColumnName = "id_comida",insertable = false, updatable = false)
-    private Comida comida;
+    @JoinColumn(name = "id_food", referencedColumnName = "id_food",insertable = false, updatable = false)
+    private Food food;
 
 
 }

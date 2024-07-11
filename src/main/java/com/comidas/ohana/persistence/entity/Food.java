@@ -15,26 +15,26 @@ import lombok.ToString;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
-@Table(name = "comidas")
+@Table(name = "foods")
 @EntityListeners(AuditingEntityListener.class)
 @Getter
 @Setter
 @NoArgsConstructor
 @ToString
-public class Comida extends AuditableEntity
+public class Food extends AuditableEntity
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_comida", nullable = false)
-    private Integer idComida;
+    @Column(name = "id_food", nullable = false)
+    private Integer foodId;
 
     @Column(nullable = false, length = 30, unique = true)
-    private String nombre;
+    private String name;
 
     @Column(nullable = false, columnDefinition = "Decimal(5,2)")
-    private Double precio;
+    private Double price;
 
     @Column(columnDefinition = "TINYINT", nullable = false)
-    private Boolean disponible;
+    private Boolean available;
 
 }

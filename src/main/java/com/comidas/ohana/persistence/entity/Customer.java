@@ -12,28 +12,28 @@ import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
-@Table(name = "clientes")
+@Table(name = "customers")
 @EntityListeners(AuditingEntityListener.class)
 @Getter
 @Setter
 @NoArgsConstructor
-public class Cliente extends AuditableEntity
+public class Customer extends AuditableEntity
 {
     @Id
-    @Column(name = "id_cliente",nullable = false, length = 15)
-    private String idCliente;
+    @Column(name = "id_customer",nullable = false, length = 15)
+    private String customerId;
 
     @Column(nullable = false, length = 60)
-    private String nombre;
+    private String name;
 
     @Column(length = 100)
-    private String direccion;
+    private String addres;
 
     @Column(nullable = false, length = 50, unique = true)
     private String email;
 
-    @Column(name = "numero_telefono",length = 100)
-    private String numTelefono;
+    @Column(name = "phone_number",length = 100)
+    private String phoneNumber;
 
 
 }

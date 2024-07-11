@@ -2,7 +2,7 @@ package com.comidas.ohana.persistence.projection;
 
 import java.time.LocalDateTime;
 
-public interface IOrdenSummary
+public interface IOrderSummary
 {
     Integer getIdOrder();
     String getCustomerName();

@@ -12,21 +12,21 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ItemOrderID implements Serializable
+public class OrderItemID implements Serializable
 {
-    private Integer idOrden;
-    private Integer idItem;
+    private Integer orderId;
+    private Integer itemId;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ItemOrderID that = (ItemOrderID) o;
-        return Objects.equals(idOrden, that.idOrden) && Objects.equals(idItem, that.idItem);
+        OrderItemID that = (OrderItemID) o;
+        return Objects.equals(orderId, that.orderId) && Objects.equals(itemId, that.itemId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idOrden, idItem);
+        return Objects.hash(orderId, itemId);
     }
 }

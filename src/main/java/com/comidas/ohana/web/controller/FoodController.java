@@ -1,8 +1,8 @@
 package com.comidas.ohana.web.controller;
 
-import com.comidas.ohana.domain.service.ComidaService;
+import com.comidas.ohana.domain.service.FoodService;
 import com.comidas.ohana.domain.service.dto.UpdateFoodPriceDto;
-import com.comidas.ohana.persistence.entity.Comida;
+import com.comidas.ohana.persistence.entity.Food;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,41 +17,41 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/comidas")
-public class ComidaController
+@RequestMapping("/api/foods")
+public class FoodController
 {
-    ComidaService comidaService;
+    FoodService foodService;
 
-    public ComidaController(ComidaService comidaService) {
-        this.comidaService = comidaService;
+    public FoodController(FoodService foodService) {
+        this.foodService = foodService;
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Comida>> getAll()
-    { return ResponseEntity.ok(this.comidaService.getAll()); }
+    public ResponseEntity<List<Food>> getAll()
+    { return ResponseEntity.ok(this.foodService.getAll()); }
 
     @GetMapping("/{idComida}")
-    public ResponseEntity<Comida> get(@PathVariable int idComida)
-    { return ResponseEntity.ok(this.comidaService.getById(idComida));}
+    public ResponseEntity<Food> get(@PathVariable int idComida)
+    { return ResponseEntity.ok(this.foodService.getById(idComida));}
 
-    @GetMapping("/disponibles")
-    public ResponseEntity<List<Comida>> getAllDisponibles()
-    { return ResponseEntity.ok(this.comidaService.getAllAvailableOrderByPrice()); }
+    @GetMapping("/availables")
+    public ResponseEntity<List<Food>> getAvailables()
+    { return ResponseEntity.ok(this.foodService.getAllAvailableOrderByPrice()); }
 
     @GetMapping("/name/{name}")
-    public ResponseEntity<Comida> getByName(@PathVariable String name)
-    { return ResponseEntity.ok(this.comidaService.getByName(name)); }
+    public ResponseEntity<Food> getByName(@PathVariable String name)
+    { return ResponseEntity.ok(this.foodService.getByName(name)); }
 
     @GetMapping("cheapest/{price}")
-    public  ResponseEntity<List<Comida>> getLessThanEqual(@PathVariable double price)
-    { return ResponseEntity.ok(this.comidaService.getLessThan(price)); }
+    public  ResponseEntity<List<Food>> getLessThanEqual(@PathVariable double price)
+    { return ResponseEntity.ok(this.foodService.getLessThan(price)); }
 
     @PostMapping
-    public ResponseEntity<?> add(@RequestBody Comida comida)
+    public ResponseEntity<?> add(@RequestBody Food food)
     {
         try {
-            if (comida.getIdComida() == null || !this.comidaService.exists(comida.getIdComida())) {
-                return ResponseEntity.ok(this.comidaService.save(comida));
+            if (food.getFoodId() == null || !this.foodService.exists(food.getFoodId())) {
+                return ResponseEntity.ok(this.foodService.save(food));
             }
 
             return ResponseEntity.status(HttpStatus.CONFLICT).body("La comida ya existe");
@@ -61,11 +61,11 @@ public class ComidaController
     }
 
     @PutMapping
-    public ResponseEntity<?> update(@RequestBody Comida comida)
+    public ResponseEntity<?> update(@RequestBody Food food)
     {
         try {
-            if (comida.getIdComida() != null && this.comidaService.exists(comida.getIdComida())) {
-                return ResponseEntity.ok(this.comidaService.save(comida));
+            if (food.getFoodId() != null && this.foodService.exists(food.getFoodId())) {
+                return ResponseEntity.ok(this.foodService.save(food));
             }
 
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("La comida no existe");
@@ -77,19 +77,19 @@ public class ComidaController
     @PutMapping("/updateprice")
     public ResponseEntity<Void> updatePrice(@RequestBody UpdateFoodPriceDto dto)
     {
-        if (this.comidaService.exists(dto.getFoodId())) {
-            this.comidaService.updatePrice(dto);
+        if (this.foodService.exists(dto.getFoodId())) {
+            this.foodService.updatePrice(dto);
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.badRequest().build();
     }
 
-    @DeleteMapping("/{idPizza}")
-    public ResponseEntity<?> delete(@PathVariable int idComida)
+    @DeleteMapping("/{idFood}")
+    public ResponseEntity<?> delete(@PathVariable int foodId)
     {
         try {
-            if (this.comidaService.exists(idComida))
-            {   this.comidaService.delete(idComida);
+            if (this.foodService.exists(foodId))
+            {   this.foodService.delete(foodId);
                 return ResponseEntity.ok().build();
             }
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("La comida no existe");

@@ -23,39 +23,39 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "ordenes")
+@Table(name = "orders")
 @EntityListeners(AuditingEntityListener.class)
 @Getter
 @Setter
 @NoArgsConstructor
-public class Orden extends AuditableEntity
+public class Order extends AuditableEntity
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_orden",nullable = false)
-    private int idOrden;
+    @Column(name = "id_order",nullable = false)
+    private int orderId;
 
-    @Column(name = "id_cliente" ,nullable = false, length = 15)
-    private String idCliente;
+    @Column(name = "id_customer" ,nullable = false, length = 15)
+    private String customerId;
 
     @Column(nullable = false, columnDefinition = "DATETIME")
-    private LocalDateTime fecha;
+    private LocalDateTime date;
 
     @Column(nullable = false, columnDefinition = "DECIMAL(6,2)")
     private Double total;
 
     @Column(nullable = false, columnDefinition = "CHAR(1)")
-    private String metodo;
+    private String method;
 
-    @Column(name = "nota_adicional" ,length = 200)
-    private String notaAdicional;
+    @Column(name = "additional_notes" ,length = 200)
+    private String additional_notes;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_cliente", referencedColumnName = "id_cliente", insertable = false, updatable = false )
+    @JoinColumn(name = "id_customer", referencedColumnName = "id_customer", insertable = false, updatable = false )
     @JsonIgnore
-    private Cliente cliente;
+    private Customer customer;
 
-    @OneToMany(mappedBy = "orden", fetch = FetchType.EAGER)
-    @OrderBy("precio ASC")
-    private List<ItemOrden> items;
+    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER)
+    @OrderBy("price ASC")
+    private List<OrderItem> items;
 }
