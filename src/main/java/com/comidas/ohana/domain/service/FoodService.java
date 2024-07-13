@@ -1,55 +1,64 @@
 package com.comidas.ohana.domain.service;
 
-import com.comidas.ohana.domain.service.dto.UpdateFoodPriceDto;
-import com.comidas.ohana.persistence.entity.Food;
-import com.comidas.ohana.persistence.repository.IFoodRepository;
+import com.comidas.ohana.domain.dto.FoodDto;
+import com.comidas.ohana.persistence.repository.FoodRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FoodService {
-    IFoodRepository foodRepository;
 
     @Autowired
-    public FoodService(IFoodRepository foodRepository) {
+    private final FoodRepository foodRepository;
+
+    public FoodService(FoodRepository foodRepository) {
         this.foodRepository = foodRepository;
     }
 
-    public List<Food> getAll() {
-        return foodRepository.findAll();
+    public Optional<List<FoodDto>> getAll() {
+        return this.foodRepository.getAll();
     }
 
-    public Food getById(int id)
-    { return this.foodRepository.findById(id).orElse(null);}
+    public FoodDto get(int id)
+    { return this.foodRepository.get(id).orElse(null);}
 
-    public Food save(Food pizzaEntity)
-    { return this.foodRepository.save(pizzaEntity); }
-
-    @Transactional
-    public void delete(int idFood)
-    { this.foodRepository.deleteById(idFood); }
+    public FoodDto save(FoodDto foodDto)
+    { return this.foodRepository.save(foodDto); }
 
     public boolean exists(int idFood)
-    { return this.foodRepository.existsById(idFood); }
+    { return this.foodRepository.exists(idFood); }
 
-    public List<Food> getAllAvailableOrderByPrice() {
-        return foodRepository.findAllByAvailableTrueOrderByPrice();
+    public void delete(int idFood)
+    { this.foodRepository.delete(idFood); }
+
+
+
+    /* @Transactional
+    public void delete(int idFood)
+    { this.foodDtoRepository.deleteById(idFood); }
+
+    */
+
+    public Optional<List<FoodDto>> getAvailableByPrice() {
+        return this.foodRepository.getAvailablesByPrice();
     }
 
-    public Food getByName(String name)
+    public FoodDto getByName(String name)
     {
-        return foodRepository.findFirstByAvailableTrueAndNameIgnoreCase(name).
+        return this.foodRepository.getByName(name).
                 orElseThrow(() -> new RuntimeException("La comida no existe"));
     }
 
-    public List<Food> getLessThan(double price)
-    { return foodRepository.findAllByAvailableTrueAndPriceLessThanEqualOrderByPriceAsc(price); }
+    public Optional<List<FoodDto>> getLessThan(double price)
+    { return this.foodRepository.getByPriceLessThanEqual(price); }
 
+    /*
     @Transactional
     public void updatePrice(UpdateFoodPriceDto dto)
-    { this.foodRepository.updatePrice(dto); }
+    { this.foodDtoRepository.updatePrice(dto); }
+
+     */
 
 }

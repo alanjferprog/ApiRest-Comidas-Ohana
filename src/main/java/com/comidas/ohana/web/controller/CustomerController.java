@@ -1,8 +1,10 @@
 package com.comidas.ohana.web.controller;
 
+import com.comidas.ohana.domain.dto.CustomerDto;
 import com.comidas.ohana.domain.service.CustomerService;
 import com.comidas.ohana.persistence.entity.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +23,9 @@ public class CustomerController
     }
 
     @GetMapping("/byphone/{phone}")
-    public ResponseEntity<Customer> getByPhone(@PathVariable("phone") String phone)
-    { return ResponseEntity.ok(this.customerService.findByPhone(phone)); }
+    public ResponseEntity<CustomerDto> getByPhone(@PathVariable("phone") String phone)
+    { return customerService.findByPhone(phone)
+            .map(customer -> new ResponseEntity<>(customer, HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
 }

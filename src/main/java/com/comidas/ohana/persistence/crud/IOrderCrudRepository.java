@@ -1,24 +1,25 @@
-package com.comidas.ohana.persistence.repository;
+package com.comidas.ohana.persistence.crud;
 
 import com.comidas.ohana.persistence.entity.Order;
 import com.comidas.ohana.persistence.projection.IOrderSummary;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.query.Procedure;
-import org.springframework.data.repository.ListCrudRepository;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
-public interface IOrderRepository extends ListCrudRepository<Order, Integer>
+public interface IOrderCrudRepository extends CrudRepository<Order,Integer>
 {
-    List<Order> findAllByDateAfter(LocalDateTime date);
-    List<Order> findAllByMethodIn(List<String> methods);
+    Optional<List<Order>> findAllByDateAfter(LocalDateTime date);
+    Optional<List<Order>> findAllByMethodIn(List<String> methods);
 
     @Query(value = "SELECT * FROM orders WHERE id_customer = :id", nativeQuery = true)
-    List<Order> findCustomerOrders(@Param("id") String idCostumer);
+    Optional<List<Order>> findCustomerOrders(@Param("id") String idCostumer);
 
-    @Query(value =
+    /* @Query(value =
             "SELECT po.id_order AS idOrder, cu.name AS customerName, po.date AS orderDate, " +
                     "po.total AS orderTotal, GROUP_CONCAT(pi.name) AS foodNames " +
                     "FROM orders po " +
@@ -30,5 +31,5 @@ public interface IOrderRepository extends ListCrudRepository<Order, Integer>
     IOrderSummary findSummary(@Param("ordenId") int idOrder);
 
     @Procedure(value = "saturday_party_random_food", outputParameterName = "order_taken")
-    boolean saveRandomOrder(@Param("id_customer") String idCustomer, @Param("method") String method);
+    boolean saveRandomOrder(@Param("id_customer") String idCustomer, @Param("method") String method); */
 }

@@ -1,18 +1,22 @@
 package com.comidas.ohana.domain.service;
 
-import com.comidas.ohana.persistence.entity.Customer;
-import com.comidas.ohana.persistence.repository.ICustomerRepository;
+import com.comidas.ohana.domain.dto.CustomerDto;
+import com.comidas.ohana.persistence.repository.CustomerRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class CustomerService
 {
-    private final ICustomerRepository customerRepository;
+    @Autowired
+    private final CustomerRepository customerRepository;
 
-    public CustomerService(ICustomerRepository customerRepository) {
+    public CustomerService(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
     }
 
-    public Customer findByPhone(String phone)
-    { return this.customerRepository.findByPhone(phone); }
+    public Optional<CustomerDto> findByPhone(String phone)
+    { return this.customerRepository.getByPhone(phone); }
 }

@@ -1,7 +1,7 @@
 package com.comidas.ohana.web.controller;
 
+import com.comidas.ohana.domain.dto.FoodDto;
 import com.comidas.ohana.domain.service.FoodService;
-import com.comidas.ohana.domain.service.dto.UpdateFoodPriceDto;
 import com.comidas.ohana.persistence.entity.Food;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 @RestController
 @RequestMapping("/api/foods")
@@ -27,27 +28,18 @@ public class FoodController
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Food>> getAll()
-    { return ResponseEntity.ok(this.foodService.getAll()); }
+    public ResponseEntity<List<FoodDto>> getAll()
+    { return this.foodService.getAll().filter(Predicate.not(List::isEmpty))
+            .map(foods -> new ResponseEntity<>(foods, HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
 
-    @GetMapping("/{idComida}")
-    public ResponseEntity<Food> get(@PathVariable int idComida)
-    { return ResponseEntity.ok(this.foodService.getById(idComida));}
-
-    @GetMapping("/availables")
-    public ResponseEntity<List<Food>> getAvailables()
-    { return ResponseEntity.ok(this.foodService.getAllAvailableOrderByPrice()); }
-
-    @GetMapping("/name/{name}")
-    public ResponseEntity<Food> getByName(@PathVariable String name)
-    { return ResponseEntity.ok(this.foodService.getByName(name)); }
-
-    @GetMapping("cheapest/{price}")
-    public  ResponseEntity<List<Food>> getLessThanEqual(@PathVariable double price)
-    { return ResponseEntity.ok(this.foodService.getLessThan(price)); }
+    @GetMapping("/{idFood}")
+    public ResponseEntity<FoodDto> get(@PathVariable int idFood)
+    { return ResponseEntity.ok(this.foodService.get(idFood));}
 
     @PostMapping
-    public ResponseEntity<?> add(@RequestBody Food food)
+    public ResponseEntity<?> add(@RequestBody FoodDto food)
     {
         try {
             if (food.getFoodId() == null || !this.foodService.exists(food.getFoodId())) {
@@ -60,8 +52,9 @@ public class FoodController
         }
     }
 
+
     @PutMapping
-    public ResponseEntity<?> update(@RequestBody Food food)
+    public ResponseEntity<?> update(@RequestBody FoodDto food)
     {
         try {
             if (food.getFoodId() != null && this.foodService.exists(food.getFoodId())) {
@@ -74,6 +67,39 @@ public class FoodController
         }
     }
 
+    @DeleteMapping("/{idFood}")
+    public ResponseEntity<?> delete(@PathVariable int idFood)
+    {
+        try {
+            if (this.foodService.exists(idFood))
+            {
+                this.foodService.delete(idFood);
+                return ResponseEntity.ok().build();
+            }
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("La comida no existe");
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @GetMapping("/availables")
+    public ResponseEntity<List<FoodDto>> getAvailables()
+    { return this.foodService.getAvailableByPrice().filter(Predicate.not(List::isEmpty))
+            .map(foods -> new ResponseEntity<>(foods, HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));}
+
+    @GetMapping("/name/{name}")
+    public ResponseEntity<FoodDto> getByName(@PathVariable String name)
+    { return ResponseEntity.ok(this.foodService.getByName(name)); }
+
+    @GetMapping("cheapest/{price}")
+    public  ResponseEntity<List<FoodDto>> getLessThanEqual(@PathVariable double price)
+    { return this.foodService.getLessThan(price).filter(Predicate.not(List::isEmpty))
+            .map(foods -> new ResponseEntity<>(foods, HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND)); }
+
+
+/*
     @PutMapping("/updateprice")
     public ResponseEntity<Void> updatePrice(@RequestBody UpdateFoodPriceDto dto)
     {
@@ -84,17 +110,7 @@ public class FoodController
         return ResponseEntity.badRequest().build();
     }
 
-    @DeleteMapping("/{idFood}")
-    public ResponseEntity<?> delete(@PathVariable int foodId)
-    {
-        try {
-            if (this.foodService.exists(foodId))
-            {   this.foodService.delete(foodId);
-                return ResponseEntity.ok().build();
-            }
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("La comida no existe");
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().build();
-        }
-    }
+
+
+     */
 }
