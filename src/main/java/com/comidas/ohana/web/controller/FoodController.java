@@ -2,7 +2,8 @@ package com.comidas.ohana.web.controller;
 
 import com.comidas.ohana.domain.dto.FoodDto;
 import com.comidas.ohana.domain.service.FoodService;
-import com.comidas.ohana.persistence.entity.Food;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -23,15 +25,17 @@ public class FoodController
 {
     FoodService foodService;
 
+    @Autowired
     public FoodController(FoodService foodService) {
         this.foodService = foodService;
     }
 
     @GetMapping("/all")
     public ResponseEntity<List<FoodDto>> getAll()
-    { return this.foodService.getAll().filter(Predicate.not(List::isEmpty))
-            .map(foods -> new ResponseEntity<>(foods, HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    {
+        return this.foodService.getAll().filter(Predicate.not(List::isEmpty))
+                .map(foods -> new ResponseEntity<>(foods, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping("/{idFood}")
@@ -86,17 +90,26 @@ public class FoodController
     public ResponseEntity<List<FoodDto>> getAvailables()
     { return this.foodService.getAvailableByPrice().filter(Predicate.not(List::isEmpty))
             .map(foods -> new ResponseEntity<>(foods, HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));}
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
 
     @GetMapping("/name/{name}")
     public ResponseEntity<FoodDto> getByName(@PathVariable String name)
     { return ResponseEntity.ok(this.foodService.getByName(name)); }
 
     @GetMapping("cheapest/{price}")
-    public  ResponseEntity<List<FoodDto>> getLessThanEqual(@PathVariable double price)
+    public ResponseEntity<List<FoodDto>> getLessThanEqual(@PathVariable double price)
     { return this.foodService.getLessThan(price).filter(Predicate.not(List::isEmpty))
             .map(foods -> new ResponseEntity<>(foods, HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND)); }
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @GetMapping("/withname/{name}")
+    public ResponseEntity<List<FoodDto>> getWithName(@PathVariable String name)
+    { return this.foodService.getWithName(name).filter(Predicate.not(List::isEmpty))
+            .map(foods -> new ResponseEntity<>(foods, HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
 
 
 /*

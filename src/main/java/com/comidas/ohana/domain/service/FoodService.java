@@ -2,6 +2,7 @@ package com.comidas.ohana.domain.service;
 
 import com.comidas.ohana.domain.dto.FoodDto;
 import com.comidas.ohana.persistence.repository.FoodRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -17,7 +18,8 @@ public class FoodService {
         this.foodRepository = foodRepository;
     }
 
-    public Optional<List<FoodDto>> getAll() {
+    public Optional<List<FoodDto>> getAll()
+    {
         return this.foodRepository.getAll();
     }
 
@@ -30,16 +32,9 @@ public class FoodService {
     public boolean exists(int idFood)
     { return this.foodRepository.exists(idFood); }
 
+    @Transactional
     public void delete(int idFood)
     { this.foodRepository.delete(idFood); }
-
-
-
-    /* @Transactional
-    public void delete(int idFood)
-    { this.foodDtoRepository.deleteById(idFood); }
-
-    */
 
     public Optional<List<FoodDto>> getAvailableByPrice() {
         return this.foodRepository.getAvailablesByPrice();
@@ -53,6 +48,9 @@ public class FoodService {
 
     public Optional<List<FoodDto>> getLessThan(double price)
     { return this.foodRepository.getByPriceLessThanEqual(price); }
+
+    public Optional<List<FoodDto>> getWithName(String name)
+    { return this.foodRepository.getByNameContains(name); }
 
     /*
     @Transactional

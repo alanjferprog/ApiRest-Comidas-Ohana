@@ -15,6 +15,7 @@ import java.util.Optional;
 @Repository
 public class FoodRepository implements IFoodDtoRepository
 {
+
     @Autowired
     private IFoodCrudRepository foodCrudRepository;
     @Autowired
@@ -63,6 +64,13 @@ public class FoodRepository implements IFoodDtoRepository
     public Optional<List<FoodDto>> getByPriceLessThanEqual(double price)
     {
         Optional<List<Food>> foods= foodCrudRepository.findAllByAvailableTrueAndPriceLessThanEqualOrderByPriceAsc(price);
+        return foods.map(food -> foodMapper.toFoodsDto(food));
+    }
+
+    @Override
+    public Optional<List<FoodDto>> getByNameContains(String name)
+    {
+        Optional<List<Food>> foods= foodCrudRepository.findAllByAvailableTrueAndNameContainingIgnoreCase(name);
         return foods.map(food -> foodMapper.toFoodsDto(food));
     }
 

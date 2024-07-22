@@ -3,6 +3,13 @@ package com.comidas.ohana.domain.dto;
 import com.comidas.ohana.persistence.entity.Customer;
 import com.comidas.ohana.persistence.entity.OrderItem;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.OrderBy;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,6 +26,5 @@ public class OrderDto
     private Double total;
     private String method;
     private String additional_notes;
-    private Customer customer;
-    private List<OrderItem> items;
+    private List<OrderItemDto> items;
 }

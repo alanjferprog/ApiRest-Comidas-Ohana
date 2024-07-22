@@ -14,6 +14,7 @@ public interface IFoodDtoRepository
     Optional<List<FoodDto>> getAvailablesByPrice();
     Optional<FoodDto> getByName(String name);
     Optional<List<FoodDto>> getByPriceLessThanEqual(double price);
+    Optional<List<FoodDto>> getByNameContains(String name);
 
 
     void updatePrice(UpdateFoodPriceDto newFoodPrice);

@@ -12,10 +12,10 @@ import java.util.Optional;
 
 public interface IFoodCrudRepository extends CrudRepository<Food, Integer>
 {
-    /*Optional<Food> findByFoodId(Integer id);*/
     Optional<List<Food>> findAllByAvailableTrueOrderByPrice();
     Optional<Food> findFirstByAvailableTrueAndNameIgnoreCase(String name);
     Optional<List<Food>> findAllByAvailableTrueAndPriceLessThanEqualOrderByPriceAsc(double price);
+    Optional<List<Food>> findAllByAvailableTrueAndNameContainingIgnoreCase(String name);
 
     @Query(value =
             "UPDATE foods " +

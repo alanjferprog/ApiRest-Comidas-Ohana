@@ -10,6 +10,7 @@ import com.comidas.ohana.persistence.mapper.IOrderMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +20,7 @@ public class OrderRepository implements IOrderDtoRepository
 {
     @Autowired
     private IOrderCrudRepository orderCrudRepository;
+    @Autowired
     private IOrderMapper orderMapper;
 
     @Override
@@ -28,16 +30,16 @@ public class OrderRepository implements IOrderDtoRepository
         return Optional.of(orderMapper.toOrderDtoList(orders));
     }
 
-    @Override
-    public Optional<List<OrderDto>> getByDate(LocalDateTime date)
+    public Optional<List<OrderDto>> getTodayOrders(LocalDateTime date)
     {
         Optional<List<Order>> orders= orderCrudRepository.findAllByDateAfter(date);
         return orders.map(order -> orderMapper.toOrderDtoList(order));
     }
 
-    public Optional<List<OrderDto>> getTodayOrders(LocalDateTime date)
+    @Override
+    public Optional<List<OrderDto>> getByDate(LocalDateTime date)
     {
-        Optional<List<Order>> orders= orderCrudRepository.findAllByDateAfter(date);
+        Optional<List<Order>> orders= orderCrudRepository.findAllByDate(date);
         return orders.map(order -> orderMapper.toOrderDtoList(order));
     }
 

@@ -5,15 +5,18 @@ import com.comidas.ohana.persistence.projection.IOrderSummary;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-public interface IOrderCrudRepository extends CrudRepository<Order,Integer>
+public interface IOrderCrudRepository extends ListCrudRepository<Order,Integer>
 {
     Optional<List<Order>> findAllByDateAfter(LocalDateTime date);
+    Optional<List<Order>> findAllByDate(LocalDateTime date);
     Optional<List<Order>> findAllByMethodIn(List<String> methods);
 
     @Query(value = "SELECT * FROM orders WHERE id_customer = :id", nativeQuery = true)

@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -15,7 +16,7 @@ import java.util.Optional;
 public interface IOrderDtoRepository
 {
     Optional<List<OrderDto>> getAll();
-
+    Optional<List<OrderDto>> getTodayOrders(LocalDateTime date);
     Optional<List<OrderDto>> getByDate(LocalDateTime date);
     Optional<List<OrderDto>> getByMethodIn(List<String> methods);
 

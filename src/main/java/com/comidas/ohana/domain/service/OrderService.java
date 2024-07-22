@@ -1,15 +1,9 @@
 package com.comidas.ohana.domain.service;
 
 import com.comidas.ohana.domain.dto.OrderDto;
-import com.comidas.ohana.domain.service.dto.RandomOrderDto;
-import com.comidas.ohana.persistence.entity.Order;
-import com.comidas.ohana.persistence.projection.IOrderSummary;
-import com.comidas.ohana.domain.repository.IOrderDtoRepository;
 import com.comidas.ohana.persistence.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -37,7 +31,8 @@ public class OrderService
     { return orderRepository.getByDate(date); }
 
     public Optional<List<OrderDto>> getTodayOrders()
-    {   LocalDateTime today= LocalDate.now().atTime(0,0);
+    {
+        LocalDateTime today= LocalDate.now().atTime(0,0);
         return this.orderRepository.getTodayOrders(today);
     }
 
